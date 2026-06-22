@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Interactive Predictive Dashboard",
+    "domain": "Data Analysis",
+    "description": "A comprehensive end-to-end sales analysis platform featuring automated data pipelines in Python, rich interactive dashboards in Power BI and Tableau, and sales trend forecasts.",
+    "image": "uploads/project-dashboard.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Smart Inventory Predictor",
+    "domain": "Classical ML & Deep Learning",
+    "description": "An AI-powered inventory replenishment optimization system. Employs Scikit-learn regressors and TensorFlow/Keras LSTM networks to forecast product demand and mitigate stockout risks.",
+    "image": "uploads/project-inventory.jpg"
+  },
+  {
+    "id": 3,
+    "title": "HexaWeb SaaS Web Platform",
+    "domain": "Web Development",
+    "description": "A multi-stack responsive SaaS portal. Utilizes HTML5, CSS3, Bootstrap 5, Express.js backend, and MySQL database to manage real-time client registrations, subscriptions, and billing.",
+    "image": "uploads/project-web.jpg"
+  },
+  {
+    "id": 4,
+    "title": "QuantumDesk CRM Application",
+    "domain": "Desktop Development",
+    "description": "A high-performance enterprise client relationship management program built using JavaFX and C#. Features responsive local database syncing, offline mode, and interactive reporting tools.",
+    "image": "uploads/project-desktop.jpg"
+  }
+]
