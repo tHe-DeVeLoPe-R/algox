@@ -705,7 +705,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 }
 .profile-circle-inner img { width: 100%; height: 100%; object-fit: cover; }
-.profile-circle-inner.contain img { width: 90%; height: 90%; object-fit: contain; }
+.profile-circle-inner.contain img { width: 100%; height: 100%; object-fit: cover; }
 
 .bod-name { font-size: 1.4rem; margin-bottom: 0.25rem; color: var(--text-main); }
 .bod-role { color: var(--color-primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 1.25rem; }
