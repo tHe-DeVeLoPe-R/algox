@@ -1,3 +1,21 @@
+// Handle Preloader
+window.addEventListener('load', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    // Ensure animation plays for at least 2.5s even if load is fast
+    const minTime = 2500; 
+    const timeElapsed = performance.now();
+    const delay = Math.max(0, minTime - timeElapsed);
+    
+    setTimeout(() => {
+      preloader.classList.add('fade-out');
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 600); // Wait for CSS transition (0.6s) to finish
+    }, delay);
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize Projects data
   initProjects();
@@ -78,7 +96,7 @@ function renderProjects(projects) {
   projects.forEach((proj, idx) => {
     // Generate a card with full non-cropped image handling
     const cardHtml = `
-      <div class="col-md-6 col-lg-4 mb-4 scroll-anim">
+      <div class="col-md-6 col-lg-4 mb-4 scroll-fold">
         <div class="project-card">
           <div class="project-img-container">
             <img src="${proj.image}" alt="${proj.title} Showcase" onerror="this.src='https://placehold.co/600x400/0b0f19/f3f4f6?text=${encodeURIComponent(proj.title)}'">
@@ -146,7 +164,7 @@ function setupVvipModal() {
  * Setup IntersectionObserver for smooth scroll fade-in animations
  */
 function setupScrollAnimations() {
-  const animatedElements = document.querySelectorAll('.scroll-anim');
+  const animatedElements = document.querySelectorAll('.scroll-anim, .scroll-fold, .scroll-splash');
 
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
