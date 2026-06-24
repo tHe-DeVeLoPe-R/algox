@@ -496,13 +496,9 @@ function animateCounter(el) {
 
 /**
  * Setup Reviews Marquee
- * Fetches images from the reviews folder and creates an infinite scrolling marquee.
+ * Dynamically discovers images from the reviews folder and creates an infinite scrolling marquee.
  */
-function setupReviewsMarquee() {
-  // Array of image identifiers - limiting to exactly what we have right now (1-7)
-  const reviewImageNumbers = [1, 2, 3, 4, 5, 6, 7];
-  
-  // Split the images across 2 rows
+async function setupReviewsMarquee() {
   const rows = [
     document.getElementById('marquee-row-1'),
     document.getElementById('marquee-row-2')
@@ -510,10 +506,50 @@ function setupReviewsMarquee() {
   
   if (!rows[0]) return; // Section not present
   
-  // Distribute items into 2 chunks
+  // 1. Dynamically discover all available images (1.jpeg, 2.png, etc.)
+  let availableImages = [];
+  let i = 1;
+  const extensions = ['.jpeg', '.jpg', '.png'];
+  let consecutiveMisses = 0; // Allow a small gap in numbering just in case
+  
+  while (consecutiveMisses < 2) {
+    let foundUrl = null;
+    
+    // Check all possible extensions for the current number
+    for (let ext of extensions) {
+      let url = `images/reviews/${i}${ext}`;
+      let exists = await new Promise(resolve => {
+        let img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+      });
+      
+      if (exists) {
+        foundUrl = url;
+        break;
+      }
+    }
+    
+    if (foundUrl) {
+      availableImages.push(foundUrl);
+      consecutiveMisses = 0; // Reset misses since we found one
+    } else {
+      consecutiveMisses++; // Increment misses if no image matched
+    }
+    i++;
+  }
+  
+  if (availableImages.length === 0) {
+    // Safe fallback if the folder is completely empty
+    availableImages = ['https://placehold.co/700x500/0f172a/7c3aed?text=Add+Review+Images'];
+  }
+  
+  // 2. Distribute discovered images into 2 rows evenly
+  const half = Math.ceil(availableImages.length / 2);
   const rowContents = [
-    reviewImageNumbers.slice(0, 4), // [1, 2, 3, 4]
-    reviewImageNumbers.slice(4, 7)  // [5, 6, 7]
+    availableImages.slice(0, half),
+    availableImages.slice(half)
   ];
   
   rows.forEach((row, index) => {
@@ -521,20 +557,19 @@ function setupReviewsMarquee() {
     if (!track) return;
     
     let htmlContent = '';
-    
     const items = rowContents[index]; 
     
-    items.forEach(num => {
-      // Trying .jpeg first, falling back to .png, then .jpg, then fallback placeholder
+    if (items.length === 0) return; // Skip if row is empty
+    
+    items.forEach(src => {
       htmlContent += `
         <div class="review-card">
-          <img src="images/reviews/${num}.jpeg" alt="Client Review ${num}" onerror="if(!this.dataset.triedPng){this.dataset.triedPng='true'; this.src='images/reviews/${num}.png';} else if(!this.dataset.triedJpg){this.dataset.triedJpg='true'; this.src='images/reviews/${num}.jpg';} else {this.src='https://placehold.co/600x400/0f172a/7c3aed?text=Review+${num}';}">
+          <img src="${src}" alt="Client Review">
         </div>
       `;
     });
     
     // Duplicate exactly once to create a continuous infinite chain
-    // The CSS animation will translate from 0 to -50%, ensuring a smooth loop
     track.innerHTML = htmlContent + htmlContent; 
   });
 }
