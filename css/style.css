@@ -136,7 +136,7 @@ h6 {
   height: 100% !important;
   object-fit: cover !important;
   object-position: left center !important;
-  transform: scale(1.8) !important; /* visually scales the logo without changing the 180x40 layout size! */
+  transform: scale(1.2) !important; /* visually scales the logo without changing the 180x40 layout size! */
   transform-origin: left center !important;
   z-index: 1000 !important;
   pointer-events: none !important;
