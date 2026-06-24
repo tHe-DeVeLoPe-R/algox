@@ -717,6 +717,128 @@ h6 {
   margin: 0;
 }
 
+/* ===== REVIEWS SECTION ===== */
+.reviews-section {
+  padding: 5rem 0;
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+.reviews-marquee-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%); /* Make it break out of container to full screen width */
+  overflow: hidden;
+  position: relative;
+  padding: 1rem 0;
+}
+
+/* Fading edges for marquee */
+.reviews-marquee-container::before,
+.reviews-marquee-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 15vw;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.reviews-marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-primary), transparent);
+}
+.reviews-marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-primary), transparent);
+}
+
+.marquee-row {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 2rem;
+  padding-right: 2rem;
+  align-items: center; /* Center items vertically */
+  animation-duration: 60s; /* Slower, continuous speed */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-left .marquee-track {
+  animation-name: scrollLeft;
+}
+
+.marquee-right .marquee-track {
+  animation-name: scrollRight;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.review-card {
+  width: 700px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(124, 58, 237, 0.15);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.review-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* Prevent cropping */
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.review-card:hover img {
+  transform: scale(1.03);
+}
+
+@media (max-width: 991.98px) {
+  .review-card {
+    width: 500px;
+  }
+}
+
+@media (max-width: 576px) {
+  .review-card {
+    width: 340px;
+  }
+  .marquee-track {
+    animation-duration: 40s;
+  }
+}
+
 /* ===== PROJECTS SECTION ===== */
 .projects-section {
   padding: 5rem 0;

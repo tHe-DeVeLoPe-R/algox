@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Setup Stats Animation
   setupStatsAnimation();
+
+  // 8. Setup Reviews Marquee
+  setupReviewsMarquee();
 });
 
 /**
@@ -489,4 +492,49 @@ function animateCounter(el) {
     }
     el.innerText = currentNum + suffix;
   }, 40); // roughly 50 steps
+}
+
+/**
+ * Setup Reviews Marquee
+ * Fetches images from the reviews folder and creates an infinite scrolling marquee.
+ */
+function setupReviewsMarquee() {
+  // Array of image identifiers - limiting to exactly what we have right now (1-7)
+  const reviewImageNumbers = [1, 2, 3, 4, 5, 6, 7];
+  
+  // Split the images across 2 rows
+  const rows = [
+    document.getElementById('marquee-row-1'),
+    document.getElementById('marquee-row-2')
+  ];
+  
+  if (!rows[0]) return; // Section not present
+  
+  // Distribute items into 2 chunks
+  const rowContents = [
+    reviewImageNumbers.slice(0, 4), // [1, 2, 3, 4]
+    reviewImageNumbers.slice(4, 7)  // [5, 6, 7]
+  ];
+  
+  rows.forEach((row, index) => {
+    const track = row.querySelector('.marquee-track');
+    if (!track) return;
+    
+    let htmlContent = '';
+    
+    const items = rowContents[index]; 
+    
+    items.forEach(num => {
+      // Trying .jpeg first, falling back to .png, then .jpg, then fallback placeholder
+      htmlContent += `
+        <div class="review-card">
+          <img src="images/reviews/${num}.jpeg" alt="Client Review ${num}" onerror="if(!this.dataset.triedPng){this.dataset.triedPng='true'; this.src='images/reviews/${num}.png';} else if(!this.dataset.triedJpg){this.dataset.triedJpg='true'; this.src='images/reviews/${num}.jpg';} else {this.src='https://placehold.co/600x400/0f172a/7c3aed?text=Review+${num}';}">
+        </div>
+      `;
+    });
+    
+    // Duplicate exactly once to create a continuous infinite chain
+    // The CSS animation will translate from 0 to -50%, ensuring a smooth loop
+    track.innerHTML = htmlContent + htmlContent; 
+  });
 }
